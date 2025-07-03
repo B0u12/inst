@@ -1,0 +1,33 @@
+Switch Raspberry Pi from Wayland to X11
+Method 1: Using raspi-config (Easiest)
+bashsudo raspi-config
+
+Go to "Advanced Options"
+Select "Wayland"
+Choose "X11"
+Select "Ok" and "Finish"
+Reboot: sudo reboot
+
+Method 2: Manual Configuration
+bash# Edit the config file
+sudo nano /boot/firmware/config.txt
+
+# Add this line at the end:
+dtoverlay=vc4-kms-v3d,cma-512
+wayland=0
+
+# Save and reboot
+sudo reboot
+Method 3: Environment Variable (Temporary)
+bash# For current session only
+export XDG_SESSION_TYPE=x11
+export WAYLAND_DISPLAY=""
+export DISPLAY=:0
+Verification
+After reboot, check if X11 is active:
+bashecho $XDG_SESSION_TYPE
+# Should print: x11
+If X11 Still Doesn't Work
+Install X11 components:
+bashsudo apt-get update
+sudo apt-get install xorg xserver-xorg-legacy
